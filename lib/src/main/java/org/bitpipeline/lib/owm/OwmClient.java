@@ -87,7 +87,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherAroundPoint (float lat, float lon, int cnt) throws IOException, JSONException { //, boolean cluster, OwmClient.Lang lang) {
-		String subUrl = String.format (Locale.ROOT, "find/station?lat=%f&lon=%f&cnt=%d&cluster=yes&units=%s",
+		String subUrl = String.format (Locale.ROOT, "weather?lat=%f&lon=%f&cnt=%d&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Integer.valueOf (cnt),units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherStatusResponse (response);
@@ -102,7 +102,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherAtCity (float lat, float lon, int cnt) throws IOException, JSONException { //, boolean cluster, OwmClient.Lang lang) {
-		String subUrl = String.format (Locale.ROOT, "find/city?lat=%f&lon=%f&cnt=%d&cluster=yes&units=%s",
+		String subUrl = String.format (Locale.ROOT, "weather?lat=%f&lon=%f&cnt=%d&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Integer.valueOf (cnt), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherStatusResponse (response);
@@ -117,7 +117,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherInBoundingBox (float northLat, float westLon, float southLat, float eastLon) throws IOException, JSONException { //, boolean cluster, OwmClient.Lang lang) {
-		String subUrl = String.format (Locale.ROOT, "find/station?bbox=%f,%f,%f,%f&cluster=yes&units=%s",
+		String subUrl = String.format (Locale.ROOT, "box/city?bbox=%f,%f,%f,%f&cluster=yes&units=%s",
 				Float.valueOf (northLat), Float.valueOf (westLon),
 				Float.valueOf (southLat), Float.valueOf (eastLon), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
@@ -133,7 +133,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherAtCityBoundingBox (float northLat, float westLon, float southLat, float eastLon) throws IOException, JSONException { //, boolean cluster, OwmClient.Lang lang) {
-		String subUrl = String.format (Locale.ROOT, "find/city?bbox=%f,%f,%f,%f&cluster=yes&units=%s",
+		String subUrl = String.format (Locale.ROOT, "box/city?bbox=%f,%f,%f,%f&cluster=yes&units=%s",
 				Float.valueOf (northLat), Float.valueOf (westLon),
 				Float.valueOf (southLat), Float.valueOf (eastLon), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
@@ -148,7 +148,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherInCircle (float lat, float lon, float radius) throws IOException, JSONException { //, boolean cluster, OwmClient.Lang lang) {
-		String subUrl = String.format (Locale.ROOT, "find/station?lat=%f&lon=%f&radius=%f&cluster=yes&units=%s",
+		String subUrl = String.format (Locale.ROOT, "find?lat=%f&lon=%f&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Float.valueOf (radius), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherStatusResponse (response);
@@ -162,7 +162,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherAtCityCircle (float lat, float lon, float radius) throws IOException, JSONException {
-		String subUrl = String.format (Locale.ROOT, "find/city?lat=%f&lon=%f&radius=%f&cluster=yes&units=%s",
+		String subUrl = String.format (Locale.ROOT, "find?lat=%f&lon=%f&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Float.valueOf (radius), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherStatusResponse (response);
@@ -174,7 +174,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public StatusWeatherData currentWeatherAtCity (int cityId) throws IOException, JSONException {
-		String subUrl = String.format (Locale.ROOT, "weather/city/%d?type=json&units=%s", Integer.valueOf (cityId), units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "weather?id=%d&type=json&units=%s", Integer.valueOf (cityId), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new StatusWeatherData (response);
 	}
@@ -185,7 +185,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public StatusWeatherData currentWeatherAtStation (int stationId) throws IOException, JSONException {
-		String subUrl = String.format (Locale.ROOT, "weather/station/%d?type=json&units=%s", Integer.valueOf (stationId), units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "station?id=%d&type=json&units=%s", Integer.valueOf (stationId), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new StatusWeatherData (response);
 	}
@@ -196,7 +196,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherAtCity (String cityName) throws IOException, JSONException {
-		String subUrl = String.format (Locale.ROOT, "find/name?q=%s&units=%s", cityName, units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "weather?q=%s&units=%s", cityName, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherStatusResponse (response);
 	}
@@ -208,7 +208,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherAtCity (String cityName, String countryCode) throws IOException, JSONException {
-		String subUrl = String.format (Locale.ROOT, "find/name?q=%s,%s&units=%s", cityName, countryCode.toUpperCase (), units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "weather?q=%s,%s&units=%s", cityName, countryCode.toUpperCase (), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherStatusResponse (response);
 	}
@@ -219,7 +219,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherForecastResponse forecastWeatherAtCity (int cityId) throws JSONException, IOException {
-		String subUrl = String.format (Locale.ROOT, "forecast/city/%d?type=json&units=%s", cityId, units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "forecast?id=%d&type=json&units=%s", cityId, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherForecastResponse (response);
 	}
@@ -230,7 +230,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherForecastResponse forecastWeatherAtCity (String cityName) throws JSONException, IOException {
-		String subUrl = String.format (Locale.ROOT, "forecast/city?q=%s&type=json&units=%s", cityName, units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "forecast?q=%s&type=json&units=%s", cityName, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherForecastResponse (response);
 	}
@@ -244,10 +244,24 @@ public class OwmClient {
 	public WeatherHistoryCityResponse historyWeatherAtCity (int cityId, HistoryType type) throws JSONException, IOException {
 		if (type == HistoryType.UNKNOWN)
 			throw new IllegalArgumentException("Can't do a historic request for unknown type of history.");
-		String subUrl = String.format (Locale.ROOT, "history/city/%d?type=%s&units=%s", cityId, type, units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "history/city?id=%d&type=%s&units=%s", cityId, type, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherHistoryCityResponse (response);
 	}
+
+    /** Get the weather history of a city.
+     * @param city name of the city
+     * @param type is the history type (frequency) to use.
+     * @return the WeatherHistoricCityResponse received
+     * @throws JSONException if the response from the OWM server can't be parsed
+     * @throws IOException if there's some network error or the OWM server replies with a error. */
+    public WeatherHistoryCityResponse historyWeatherAtCity (String city, HistoryType type) throws JSONException, IOException {
+        if (type == HistoryType.UNKNOWN)
+            throw new IllegalArgumentException("Can't do a historic request for unknown type of history.");
+        String subUrl = String.format (Locale.ROOT, "history/city?q=%s&type=%s&units=%s", city, type, units.toString().toLowerCase());
+        JSONObject response = doQuery (subUrl);
+        return new WeatherHistoryCityResponse (response);
+    }
 
 	/** Get the weather history of a city.
 	 * @param stationId is the OWM station ID
@@ -258,7 +272,7 @@ public class OwmClient {
 	public WeatherHistoryStationResponse historyWeatherAtStation (int stationId, HistoryType type) throws JSONException, IOException {
 		if (type == HistoryType.UNKNOWN)
 			throw new IllegalArgumentException("Can't do a historic request for unknown type of history.");
-		String subUrl = String.format (Locale.ROOT, "history/station/%d?type=%s&units=%s", stationId, type, units.toString().toLowerCase());
+		String subUrl = String.format (Locale.ROOT, "history/station?id=%d&type=%s&units=%s", stationId, type, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherHistoryStationResponse (response);
 	}
@@ -282,7 +296,7 @@ public class OwmClient {
 						String.format ("Unable to get a response from OWM server"));
 			}
 			int statusCode = statusLine.getStatusCode ();
-			if (statusCode < 200 && statusCode >= 300) {
+			if (statusCode < 200 || statusCode >= 300) {
 				throw new IOException (
 						String.format ("OWM server responded with status code %d: %s", statusCode, statusLine));
 			}
