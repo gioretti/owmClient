@@ -15,12 +15,11 @@
  ***************************************************************************/
 package org.bitpipeline.lib.owm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -34,7 +33,8 @@ public class WeatherStatusResponse extends AbstractOwmResponse {
 		super (json);
 		JSONArray jsonWeatherStatus = json.optJSONArray (AbstractOwmResponse.JSON_LIST);
 		if (jsonWeatherStatus == null) {
-			this.status = Collections.emptyList ();
+			this.status = new ArrayList<StatusWeatherData>();
+            this.status.add(new StatusWeatherData(json));
 		} else {
 			this.status = new ArrayList<StatusWeatherData> (jsonWeatherStatus.length ());
 			for (int i = 0; i <jsonWeatherStatus.length (); i++) {
