@@ -49,6 +49,8 @@ limitations under the License.
 	<properties>
 		<compileSource>1.6</compileSource>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <repo.id>bss-repo</repo.id>
+        <repo.url>http://nobel.felk.cvut.cz:8000/artifactory</repo.url>
 	</properties>
 
 	<dependencies>
@@ -78,6 +80,21 @@ limitations under the License.
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>${repo.id}</id>
+            <name>nobel.felk.cvut.cz-snapshots</name>
+            <url>${repo.url}/libs-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>${repo.id}</id>
+            <name>nobel.felk.cvut.cz-releases</name>
+            <url>${repo.url}/libs-release-local</url>
+        </repository>
+    </distributionManagement>
 
 	<!--<distributionManagement>-->
 		<!--<snapshotRepository>-->
@@ -171,6 +188,7 @@ limitations under the License.
 				<version>2.4</version>
 				<executions>
 					<execution>
+                        <id>attach-sources</id>
 						<goals>
 							<goal>jar</goal>
 						</goals>
