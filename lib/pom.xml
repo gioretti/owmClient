@@ -190,10 +190,8 @@ limitations under the License.
 					<execution>
                         <id>attach-sources</id>
 						<goals>
-							<goal>jar</goal>
+							<goal>jar-no-fork</goal>
 						</goals>
-						<phase>package</phase>
-						<inherited>true</inherited>
 					</execution>
 				</executions>
 			</plugin>
