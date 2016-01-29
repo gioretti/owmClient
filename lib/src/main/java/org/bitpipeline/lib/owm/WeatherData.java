@@ -15,16 +15,10 @@
  ***************************************************************************/
 package org.bitpipeline.lib.owm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.*;
 
 public class WeatherData extends AbstractWeatherData {
 	private static final String JSON_CLOUDS    = "clouds";
@@ -185,6 +179,7 @@ public class WeatherData extends AbstractWeatherData {
 
 			public static enum SkyCondition {
 				UNKNOWN ("unknown"),
+				CLR ("clear"),
 				FEW ("few [12.5%, 25%]"),
 				SCT ("scattered [37.5%, 50%]"),
 				BKN ("broken sky [62%, 87.5%]"),
