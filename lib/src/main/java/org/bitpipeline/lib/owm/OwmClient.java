@@ -269,6 +269,9 @@ public class OwmClient {
             subUrl+="&APPID="+owmAPPID;
         }
 		HttpGet httpget = new HttpGet (this.baseOwmUrl + subUrl);
+		if (this.owmAPPID != null) {
+			httpget.addHeader (OwmClient.APPID_HEADER, this.owmAPPID);
+		}
 
 		HttpResponse response = this.httpClient.execute (httpget);
 		InputStream contentStream = null;
