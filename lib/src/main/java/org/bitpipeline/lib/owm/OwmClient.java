@@ -48,7 +48,7 @@ public class OwmClient {
 
     private Units units = Units.IMPERIAL;
 
-	private String baseOwmUrl = "http://api.openweathermap.org/data/2.1/";
+	private String baseOwmUrl = "http://api.openweathermap.org/data/2.5/";
 	private String owmAPPID = null;
 
 	private HttpClient httpClient;
