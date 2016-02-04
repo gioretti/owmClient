@@ -32,6 +32,9 @@ import java.util.Locale;
  * @author mtavares */
 public class OwmClient {
 	static private final String APPID_HEADER = "x-api-key";
+	private static final String JSON_CODE = "cod";
+	private static final int JSON_ERR = 404;
+
 
 	public enum HistoryType {
 		UNKNOWN,
@@ -90,6 +93,9 @@ public class OwmClient {
 		String subUrl = String.format (Locale.ROOT, "weather?lat=%f&lon=%f&cnt=%d&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Integer.valueOf (cnt),units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -105,6 +111,9 @@ public class OwmClient {
 		String subUrl = String.format (Locale.ROOT, "weather?lat=%f&lon=%f&cnt=%d&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Integer.valueOf (cnt), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -121,6 +130,9 @@ public class OwmClient {
 				Float.valueOf (northLat), Float.valueOf (westLon),
 				Float.valueOf (southLat), Float.valueOf (eastLon), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -137,6 +149,9 @@ public class OwmClient {
 				Float.valueOf (northLat), Float.valueOf (westLon),
 				Float.valueOf (southLat), Float.valueOf (eastLon), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -151,6 +166,9 @@ public class OwmClient {
 		String subUrl = String.format (Locale.ROOT, "find?lat=%f&lon=%f&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Float.valueOf (radius), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -165,6 +183,9 @@ public class OwmClient {
 		String subUrl = String.format (Locale.ROOT, "find?lat=%f&lon=%f&cluster=yes&units=%s",
 				Float.valueOf (lat), Float.valueOf (lon), Float.valueOf (radius), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -176,6 +197,9 @@ public class OwmClient {
 	public StatusWeatherData currentWeatherAtCity (int cityId) throws IOException, JSONException {
 		String subUrl = String.format (Locale.ROOT, "weather?id=%d&type=json&units=%s", Integer.valueOf (cityId), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new StatusWeatherData (response);
 	}
 
@@ -187,6 +211,9 @@ public class OwmClient {
 	public StatusWeatherData currentWeatherAtStation (int stationId) throws IOException, JSONException {
 		String subUrl = String.format (Locale.ROOT, "station?id=%d&type=json&units=%s", Integer.valueOf (stationId), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new StatusWeatherData (response);
 	}
 
@@ -198,6 +225,9 @@ public class OwmClient {
 	public WeatherStatusResponse currentWeatherAtCity (String cityName) throws IOException, JSONException {
 		String subUrl = String.format (Locale.ROOT, "weather?q=%s&units=%s", cityName, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -210,6 +240,9 @@ public class OwmClient {
 	public WeatherStatusResponse currentWeatherAtCity (String cityName, String countryCode) throws IOException, JSONException {
 		String subUrl = String.format (Locale.ROOT, "weather?q=%s,%s&units=%s", cityName, countryCode.toUpperCase (), units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherStatusResponse (response);
 	}
 
@@ -221,6 +254,9 @@ public class OwmClient {
 	public WeatherForecastResponse forecastWeatherAtCity (int cityId) throws JSONException, IOException {
 		String subUrl = String.format (Locale.ROOT, "forecast?id=%d&type=json&units=%s", cityId, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherForecastResponse (response);
 	}
 
@@ -232,6 +268,9 @@ public class OwmClient {
 	public WeatherForecastResponse forecastWeatherAtCity (String cityName) throws JSONException, IOException {
 		String subUrl = String.format (Locale.ROOT, "forecast?q=%s&type=json&units=%s", cityName, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherForecastResponse (response);
 	}
 
@@ -246,6 +285,9 @@ public class OwmClient {
 			throw new IllegalArgumentException("Can't do a historic request for unknown type of history.");
 		String subUrl = String.format (Locale.ROOT, "history/city?id=%d&type=%s&units=%s", cityId, type, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherHistoryCityResponse (response);
 	}
 
@@ -260,6 +302,9 @@ public class OwmClient {
             throw new IllegalArgumentException("Can't do a historic request for unknown type of history.");
         String subUrl = String.format (Locale.ROOT, "history/city?q=%s&type=%s&units=%s", city, type, units.toString().toLowerCase());
         JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
         return new WeatherHistoryCityResponse (response);
     }
 
@@ -274,7 +319,14 @@ public class OwmClient {
 			throw new IllegalArgumentException("Can't do a historic request for unknown type of history.");
 		String subUrl = String.format (Locale.ROOT, "history/station?id=%d&type=%s&units=%s", stationId, type, units.toString().toLowerCase());
 		JSONObject response = doQuery (subUrl);
+		if(isError(response)){
+			return null;
+		}
 		return new WeatherHistoryStationResponse (response);
+	}
+
+	private boolean isError(JSONObject json) throws JSONException {
+		return json.has(JSON_CODE) && json.getInt(JSON_CODE)==JSON_ERR;
 	}
 
 	private JSONObject doQuery (String subUrl) throws JSONException, IOException {

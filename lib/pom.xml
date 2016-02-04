@@ -39,6 +39,16 @@ limitations under the License.
 				<role>developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<name>Ondrej Vanek</name>
+			<email>ondrej.vanek@blindspot-solutions.com</email>
+			<id>ondrejvanek</id>
+			<url>http://blindspot.solutions</url>
+			<timezone>+1</timezone>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<organization>
