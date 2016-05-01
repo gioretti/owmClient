@@ -2,7 +2,7 @@ package org.bitpipeline.lib.owm;
 
 import org.json.JSONObject;
 
-public class Forecast16WeatherData {
+public class Forecast16WeatherData extends LocalizedWeatherData {
 
     public static final String JSON_WIND = "speed";
     public static final String JSON_DATETIME = "dt";
@@ -16,6 +16,7 @@ public class Forecast16WeatherData {
     private long dateTime;
 
     public Forecast16WeatherData(JSONObject json) {
+        super(json);
         this.pressure = (float) json.optDouble(JSON_PRESSURE);
         this.humidity = (float) json.optDouble(JSON_HUMIDITY);
         this.windSpeed = (float) json.optDouble(JSON_WIND);
