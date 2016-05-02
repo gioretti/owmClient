@@ -1,0 +1,29 @@
+package org.bitpipeline.lib.owm;
+
+import java.io.IOException;
+
+import org.json.JSONException;
+
+public class DEMO {
+    
+    public static void main(String[] args) throws IOException, JSONException {
+        OwmClient client = new OwmClient(OwmClient.Units.METRIC);
+        client.setAPPID("c4cb05905b0c1017d58221beda81460d");
+        
+        WeatherStatusResponse status = client.currentWeatherAtCity("Zurich");
+        System.out.println(status.getWeatherStatus().get(0).getMain().getTemp());
+        System.out.println(status.getWeatherStatus().get(0).getMain().getTempMax());
+        System.out.println(status.getWeatherStatus().get(0).getMain().getTempMin());
+        
+        
+        WeatherForecastResponse r = client.forecastWeatherAtCity("Zurich");
+        System.out.println(r.getForecasts().get(0).getMain().getTemp());
+        System.out.println(r.getForecasts().get(0).getMain().getTempMax());
+        System.out.println(r.getForecasts().get(0).getMain().getTempMin());
+        
+        WeatherForecast16Response r16 = client.dailyForecastWeatherAtCity("Zurich");
+        System.out.println(r16.getForecasts().get(1).getTemperature().getTempDay());
+        
+    }
+
+}

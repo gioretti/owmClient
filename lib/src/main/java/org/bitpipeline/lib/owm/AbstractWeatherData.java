@@ -29,9 +29,6 @@ abstract public class AbstractWeatherData {
 
 
 	static abstract public class Main {
-		protected static final String JSON_TEMP     = "temp";
-		protected static final String JSON_TEMP_MIN = "temp_min";
-		protected static final String JSON_TEMP_MAX = "temp_max";
 		protected static final String JSON_HUMIDITY = "humidity";
 		protected static final String JSON_PRESSURE = "pressure";
 
@@ -67,8 +64,8 @@ abstract public class AbstractWeatherData {
 	}
 
 	/** Get the temperature of this weather report 
-	 * @return <code>Float.NaN</code> if the report doesn't have temperature data; the value of the temperature in Kelvin otherwise. */
-	abstract public float getTemp ();
+	 * @return <code>null</code> if the report doesn't have temperature data; */
+	abstract public Temperature getTemperature ();
 	
 	/** Get the humidity of this weather report 
 	 * @return <code>Float.NaN</code> if the report doesn't have humidity data; the value of the humidity in percentage to condensation point otherwise. */

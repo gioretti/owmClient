@@ -27,60 +27,7 @@ public class Forecast16WeatherData extends LocalizedWeatherData {
         }
     }
 
-    public static class Temperature {
-
-        public static final String JSON_F16_TEMP = "temp";
-        public static final String JSON_F16_TEMP_DAY = "day";
-        public static final String JSON_F16_TEMP_MIN = "min";
-        public static final String JSON_F16_TEMP_MAX = "max";
-        public static final String JSON_F16_TEMP_EVE = "night";
-        public static final String JSON_F16_TEMP_NIGHT = "eve";
-        public static final String JSON_F16_TEMP_MORNING = "morn";
-
-        private final float day;
-        private final float min;
-        private final float max;
-        private final float night;
-        private final float eve;
-        private final float morn;
-
-        public Temperature(JSONObject json) {
-            this.day = (float) json.optDouble(Temperature.JSON_F16_TEMP_DAY);
-            this.min = (float) json.optDouble(Temperature.JSON_F16_TEMP_MIN);
-            this.max = (float) json.optDouble(Temperature.JSON_F16_TEMP_MAX);
-            this.night = (float) json
-                    .optDouble(Temperature.JSON_F16_TEMP_NIGHT);
-            this.eve = (float) json.optDouble(Temperature.JSON_F16_TEMP_EVE);
-            this.morn = (float) json
-                    .optDouble(Temperature.JSON_F16_TEMP_MORNING);
-        }
-
-        public float getDay() {
-            return day;
-        }
-
-        public float getMin() {
-            return min;
-        }
-
-        public float getMax() {
-            return max;
-        }
-
-        public float getNight() {
-            return night;
-        }
-
-        public float getEve() {
-            return eve;
-        }
-
-        public float getMorn() {
-            return morn;
-        }
-    }
-
-    public boolean hasTemp() {
+    public boolean hasTemperature() {
         return this.temp != null;
     }
 
@@ -99,8 +46,8 @@ public class Forecast16WeatherData extends LocalizedWeatherData {
     public float getWindSpeed() {
         return windSpeed;
     }
-    
-    public long getDateTime(){
+
+    public long getDateTime() {
         return dateTime;
     }
 }

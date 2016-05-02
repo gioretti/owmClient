@@ -155,9 +155,9 @@ public class SampledWeatherData extends AbstractWeatherData {
 		private final SampledFValue humidity;
 
 		public Main (JSONObject json) {
-			this.temp = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_TEMP);
-			this.tempMin = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_TEMP_MIN);
-			this.tempMax = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_TEMP_MAX);
+			this.temp = SampledFValue.createSampledFValueIfExisting (json, Temperature.JSON_TEMP);
+			this.tempMin = SampledFValue.createSampledFValueIfExisting (json, Temperature.JSON_TEMP_MIN);
+			this.tempMax = SampledFValue.createSampledFValueIfExisting (json, Temperature.JSON_TEMP_MAX);
 			this.pressure = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_PRESSURE);
 			this.humidity = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_HUMIDITY);
 		}
@@ -343,7 +343,7 @@ public class SampledWeatherData extends AbstractWeatherData {
 	public SampledWeatherData (JSONObject json) {
 		super (json);
 
-		this.temp = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_TEMP);
+		this.temp = SampledFValue.createSampledFValueIfExisting (json, Temperature.JSON_TEMP);
 		this.pressure = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_PRESSURE);
 		this.humidity = SampledFValue.createSampledFValueIfExisting (json, Main.JSON_HUMIDITY);
 
@@ -376,7 +376,7 @@ public class SampledWeatherData extends AbstractWeatherData {
 		if (this.temp != null && this.temp.hasValue ())
 			return this.temp.getValue ();
 		if (hasMain () && this.main.hasTemp ())
-			return this.main.getTemp ();
+			return this.main.getTemp();
 		return Float.NaN;
 	}
 
@@ -488,4 +488,10 @@ public class SampledWeatherData extends AbstractWeatherData {
 			precipitation =  precipitation != Integer.MIN_VALUE ? precipitation + getSnow () : getSnow ();
 		return precipitation;
 	}
+	
+    @Override
+    public Temperature getTemperature() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

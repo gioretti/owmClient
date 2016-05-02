@@ -25,39 +25,39 @@ public class WeatherData extends AbstractWeatherData {
 	private static final String JSON_WEATHER   = "weather";
 
 	public static class Main extends AbstractWeatherData.Main {
-		private final float temp;
-		private final float tempMin;
-		private final float tempMax;
+		private final Temperature temp;
 		private final float pressure;
 		private final float humidity;
 
 		public Main (JSONObject json) {
-			this.temp = (float) json.optDouble (Main.JSON_TEMP);
-			this.tempMin = (float) json.optDouble (Main.JSON_TEMP_MIN);
-			this.tempMax = (float) json.optDouble (Main.JSON_TEMP_MAX);
+		    this.temp = new Temperature(json);
 			this.pressure = (float) json.optDouble (Main.JSON_PRESSURE);
 			this.humidity = (float) json.optDouble (Main.JSON_HUMIDITY);
 		}
+		
+		public Temperature getTemperature(){
+		    return this.temp;
+		}
 
 		public boolean hasTemp () {
-			return !Float.isNaN (this.temp);
+			return !Float.isNaN (this.temp.getTemp());
 		}
 		public float getTemp () {
-			return this.temp;
+			return this.temp.getTemp();
 		}
 
 		public boolean hasTempMin () {
-			return !Float.isNaN (this.tempMin);
+			return !Float.isNaN (this.temp.getTempMin());
 		}
 		public float getTempMin () {
-			return this.tempMin;
+			return this.temp.getTempMin();
 		}
 
 		public boolean hasTempMax () {
-			return !Float.isNaN (this.tempMax);
+			return !Float.isNaN (this.temp.getTempMax());
 		}
 		public float getTempMax () {
-			return this.tempMax;
+			return this.temp.getTempMax();
 		}
 
 		public boolean hasPressure () {
@@ -531,10 +531,8 @@ public class WeatherData extends AbstractWeatherData {
 
 	/* */
 
-	public float getTemp () {
-		if (hasMain () && this.main.hasTemp ())
-			return this.main.getTemp ();
-		return Float.NaN;
+	public Temperature getTemperature () {
+	    return this.main.getTemperature();
 	}
 
 	public float getHumidity () {
