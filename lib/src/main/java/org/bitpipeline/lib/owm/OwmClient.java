@@ -45,16 +45,6 @@ public class OwmClient {
     private static final String JSON_CODE = "cod";
     
     /**
-     * The attibute name for number of results
-     */
-    private static final String JSON_COUNT = "cnt";
-    
-    /**
-     * The attibute name for a list
-     */
-    private static final String JSON_LIST = "list";
-    
-    /**
      * the error code for JSON objects obtained from OWM
      * 
      * @see #JSON_CODE
@@ -366,12 +356,9 @@ public class OwmClient {
 	 * Find current weather of several cities.
 	 * 
 	 * @param cityIds
-	 *            are the IDs of the cities. Note that an empty ID array will
-	 *            result in an empty StatusWeatherData array.
-	 * @return The StatusWeatherData received in an array. The length of the
-	 *         array is at most the number of valid IDs given by
-	 *         <code>cityIds</code>. <code>null</code> will be returned if OWM
-	 *         responds with code {@value #JSON_ERR}.
+	 *            are the IDs of the cities.
+	 * @return The WeatherStatusResponse received . <code>null</code> will be
+	 *         returned if OWM responds with code {@value #JSON_ERR}.
 	 * @throws NullPointerException
 	 *             if <code>cityIds</code> refers to <code>null</code>
 	 * @throws JSONException
@@ -380,10 +367,11 @@ public class OwmClient {
 	 *             if there's some network error or the OWM server replies with
 	 *             an error.
 	 */
-    public StatusWeatherData[] currentWeatherAtCities(int[] cityIds)
+    public WeatherStatusResponse currentWeatherAtCities(int[] cityIds)
             throws IOException, JSONException {
     	if (cityIds == null)
     		throw new NullPointerException("City ID array must be specified!");
+    	
     	StringBuilder s = new StringBuilder();
     	if (cityIds.length > 0) {
 	    	for (int i = 0; i < cityIds.length-1; i++) {
@@ -400,19 +388,8 @@ public class OwmClient {
         if (isError(response)) {
             return null;
         }
-        JSONArray responseArr = response.getJSONArray(JSON_LIST);
-        StatusWeatherData[] weatherArr = new StatusWeatherData[response.getInt(JSON_COUNT)];
-        try {
-	        for (int i = 0; i < weatherArr.length; i++) {
-	        	weatherArr[i] = new StatusWeatherData((JSONObject) responseArr.get(i));
-	        }
-        }
-        catch (ClassCastException ex) {
-        	// class cast exception means inparsable JSON object
-        	throw new JSONException(ex);
-        }
         
-        return weatherArr;
+        return new WeatherStatusResponse(response);
     }
 
     /**
@@ -444,7 +421,7 @@ public class OwmClient {
      * 
      * @param cityName
      *            is the name of the city
-     * @return the StatusWeatherData received
+     * @return the WeatherStatusResponse received
      * @throws JSONException
      *             if the response from the OWM server can't be parsed
      * @throws IOException
