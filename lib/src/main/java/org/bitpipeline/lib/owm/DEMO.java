@@ -4,6 +4,12 @@ import java.io.IOException;
 
 import org.json.JSONException;
 
+/**
+ * A demo to show how to use this API.
+ * 
+ * @author moretgio https://github.com/moretgio
+ * @author Ayutac https://github.com/Ayutac
+ */
 public class DEMO {
     
     public static void main(String[] args) throws IOException, JSONException {
