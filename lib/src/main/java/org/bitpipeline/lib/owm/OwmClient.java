@@ -32,26 +32,54 @@ import java.util.Locale;
  * described in http://openweathermap.org/wiki/API/JSON_API
  * 
  * @author mtavares
+ * @author ondrejvanek
+ * @author Ayutac
  */
 public class OwmClient {
     static private final String APPID_HEADER = "x-api-key";
+    
     private static final String JSON_CODE = "cod";
+    
+    /**
+     * the error code for JSON objects obtained from OWM
+     */
     private static final int JSON_ERR = 404;
 
     public enum HistoryType {
         UNKNOWN, TICK, HOUR, DAY
     }
 
+    /**
+     * An enumeration of the possible units to use.
+     */
     public enum Units {
-        METRIC, IMPERIAL;
+    	/**
+    	 * metric units
+    	 */
+        METRIC, 
+        
+        /**
+         * imperial units
+         */
+        IMPERIAL;
 
+    	/**
+    	 * Returns the default units to use.
+    	 * @return the default units to use
+    	 */
         static Units getDefault() {
             return IMPERIAL;
         }
     }
 
+    /**
+     * the units to use
+     */
     private Units units = Units.IMPERIAL;
 
+    /**
+     * the base URL for Open Weather Map
+     */
     private String baseOwmUrl = "http://api.openweathermap.org/data/2.5/";
     private String owmAPPID = null;
 
@@ -443,7 +471,7 @@ public class OwmClient {
      * Get the daily weather forecast for a city in the next 7 days. (Just one
      * Forecast a day).
      * 
-     * @param cityName
+     * @param cityName the name of the city
      * @return the WeatherForecasteResponse received
      * @throws JSONException
      *             if the response from the OWM server can't be parsed
@@ -547,6 +575,19 @@ public class OwmClient {
         return new WeatherHistoryStationResponse(response);
     }
 
+	/**
+	 * Tells if the {@value #JSON_CODE} attribute of the specified JSON object
+	 * holds the error value {@value #JSON_ERR}.
+	 * 
+	 * @param json
+	 *            the JSON object to check
+	 * @return <code>true</code> if the attribute is present and its value
+	 *         equals the error value {@value #JSON_ERR}, else
+	 *         <code>false</code>.
+	 * @throws JSONException
+	 *             If the {@value #JSON_CODE} attribute is present but doesn't
+	 *             hold an integer.
+	 */
     private boolean isError(JSONObject json) throws JSONException {
         return json.has(JSON_CODE) && json.getInt(JSON_CODE) == JSON_ERR;
     }
