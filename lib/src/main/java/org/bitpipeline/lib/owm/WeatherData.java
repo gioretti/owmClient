@@ -278,9 +278,21 @@ public class WeatherData extends AbstractWeatherData {
 			}
 		}
 
+		/**
+		 * Returns if the cloudiness is specified.
+		 * 
+		 * @return <code>true</code> if the cloudiness is specified
+		 * @see #getAll()
+		 */
 		public boolean hasAll () {
 			return this.all != Integer.MIN_VALUE;
 		}
+		
+		/**
+		 * Returns the cloudiness in percent.
+		 * 
+		 * @return the cloudiness in %
+		 */
 		public int getAll () {
 			return this.all;
 		}
@@ -507,7 +519,7 @@ public class WeatherData extends AbstractWeatherData {
 	public Clouds getClouds () {
 		return this.clouds;
 	}
-
+	
 	public boolean hasRain () {
 		return this.rain != null;
 	}
@@ -522,9 +534,20 @@ public class WeatherData extends AbstractWeatherData {
 		return this.snow;
 	}
 
+	/**
+	 * Returns if the perciptation is specified.
+	 * 
+	 * @return <code>true</code> if the perciptation is specified
+	 * @see #getPrecipitation()
+	 */
+	public boolean hasPerciptation () {
+		return hasRain() || hasSnow();
+	}
+
 	public boolean hasWeatherConditions () {
 		return this.weatherConditions != null && !this.weatherConditions.isEmpty ();
 	}
+	
 	public List<WeatherCondition> getWeatherConditions () {
 		return this.weatherConditions;
 	}

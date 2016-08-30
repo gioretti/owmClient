@@ -53,6 +53,12 @@ public class StatusWeatherData extends LocalizedWeatherData {
 	public boolean hasId () {
 		return this.id != Long.MIN_VALUE;
 	}
+	
+	/**
+	 * Returns the ID of the city this weather information belongs to.
+	 * 
+	 * @return the ID of the city this weather information belongs to
+	 */
 	public long getId () {
 		return this.id;
 	}
@@ -60,6 +66,12 @@ public class StatusWeatherData extends LocalizedWeatherData {
 	public boolean hasName () {
 		return this.name != null && this.name.length () > 0;
 	}
+	
+	/**
+	 * Returns the name of the city this weather information belongs to.
+	 * 
+	 * @return the name of the city this weather information belongs to
+	 */
 	public String getName () {
 		return this.name;
 	}

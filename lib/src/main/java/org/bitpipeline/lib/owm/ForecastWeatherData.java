@@ -25,12 +25,20 @@ public class ForecastWeatherData extends LocalizedWeatherData {
 	private long calcDateTime = Long.MIN_VALUE;
 	
 	/**
-	 * @param json json container with the forecast data */
+	 * @param json json container with the forecast data 
+	 * */
 	public ForecastWeatherData (JSONObject json) {
 		super (json);
 		this.calcDateTime = json.optLong (ForecastWeatherData.DATETIME_KEY_NAME, Long.MIN_VALUE);
 	}
 
+	/**
+	 * Returns the time point the forecast is made for in seconds since the
+	 * epoch.
+	 * 
+	 * @return the time point the forecast is made for in seconds since the
+	 *         epoch
+	 */
 	public long getCalcDateTime () {
 		return this.calcDateTime;
 	}
