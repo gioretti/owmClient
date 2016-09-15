@@ -466,17 +466,19 @@ public class OwmClient {
     }
 
     /**
-     * Get the weather forecast for a city
-     * 
-     * @param cityId
-     *            is the ID of the city
-     * @return the WeatherForecasteResponse received
-     * @throws JSONException
-     *             if the response from the OWM server can't be parsed
-     * @throws IOException
-     *             if there's some network error or the OWM server replies with
-     *             a error.
-     */
+	 * Get the weather forecast for a city
+	 * 
+	 * @param cityId
+	 *            is the ID of the city
+	 * @return the WeatherForecasteResponse received or <code>null</code> if the
+	 *         {@link #JSON_CODE} attribute of the specified JSON object holds
+	 *         the error value {@value #JSON_ERR}.
+	 * @throws JSONException
+	 *             if the response from the OWM server can't be parsed
+	 * @throws IOException
+	 *             if there's some network error or the OWM server replies with
+	 *             a error.
+	 */
     public WeatherForecastResponse forecastWeatherAtCity(int cityId)
             throws JSONException, IOException {
         String subUrl = String.format(Locale.ROOT,
