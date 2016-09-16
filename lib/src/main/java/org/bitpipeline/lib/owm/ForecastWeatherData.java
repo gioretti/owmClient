@@ -42,4 +42,14 @@ public class ForecastWeatherData extends LocalizedWeatherData {
 	public long getCalcDateTime () {
 		return this.calcDateTime;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s = ForecastWeatherData.class.getSimpleName() + s.substring(s.indexOf(' '));
+		return s.substring(0, s.length()-1) + ", calcDateTime=" + calcDateTime + "]";
+	}
 }

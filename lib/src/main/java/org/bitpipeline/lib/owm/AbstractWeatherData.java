@@ -73,6 +73,15 @@ abstract public class AbstractWeatherData {
 		 * @return the humidity in % or NaN if no humidity could be found.
 		 */
 		abstract public float getHumidity ();
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Main.class.getSimpleName() + "[getTemp()=" + getTemp() + ", getTempMin()=" + getTempMin() + ", getTempMax()=" + getTempMax()
+				+ ", getPressure()=" + getPressure() + ", getHumidity()=" + getHumidity() + "]";
+		}
 	}
 
 	static abstract public class Wind {
@@ -101,6 +110,15 @@ abstract public class AbstractWeatherData {
 		abstract public float getGust ();
 		abstract public int getVarBeg ();
 		abstract public int getVarEnd ();
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Wind.class.getSimpleName() + " [getSpeed()=" + getSpeed() + ", getDeg()=" + getDeg() + ", getGust()=" + getGust()
+				+ ", getVarBeg()=" + getVarBeg() + ", getVarEnd()=" + getVarEnd() + "]";
+		}
 	}
 
 	private final long dateTime;

@@ -37,6 +37,14 @@ public class StatusWeatherData extends LocalizedWeatherData {
 		public int getZoom () {
 			return this.zoom;
 		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Station.class.getSimpleName() + " [zoom=" + zoom + "]";
+		}
 	}
 	private final long id;
 	private final String name;
@@ -81,5 +89,15 @@ public class StatusWeatherData extends LocalizedWeatherData {
 	}
 	public Station getStation () {
 		return this.station;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s = StatusWeatherData.class.getSimpleName() + s.substring(s.indexOf(' '));
+		return s.substring(0, s.length()-1) + ", id=" + id + ", name=" + name + ", station=" + station + "]";
 	}
 }

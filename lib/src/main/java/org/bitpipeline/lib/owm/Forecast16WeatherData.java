@@ -50,4 +50,5 @@ public class Forecast16WeatherData extends LocalizedWeatherData {
     public long getDateTime() {
         return dateTime;
     }
+    
 }

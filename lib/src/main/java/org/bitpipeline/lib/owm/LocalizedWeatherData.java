@@ -47,6 +47,14 @@ public class LocalizedWeatherData extends WeatherData {
 		public float getLongitude () {
 			return longitude;
 		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return GeoCoord.class.getSimpleName() + " [latitude=" + latitude + ", longitude=" + longitude + "]";
+		}
 	}
 
 	private final String url;
@@ -82,5 +90,15 @@ public class LocalizedWeatherData extends WeatherData {
 	}
 	public float getDistance () {
 		return this.distance;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s = LocalizedWeatherData.class.getSimpleName() + s.substring(s.indexOf(' '));
+		return s.substring(0, s.length()-1) + ", url=" + url + ", coord=" + coord + ", distance=" + distance + "]";
 	}
 }
