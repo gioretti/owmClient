@@ -21,6 +21,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -654,19 +655,21 @@ public class OwmClient {
         HttpResponse response = this.httpClient.execute(httpget);
         InputStream contentStream = null;
         try {
+            HttpEntity responseEntity = response.getEntity();
             StatusLine statusLine = response.getStatusLine();
             if (statusLine == null) {
+            	EntityUtils.consumeQuietly(responseEntity);
                 throw new IOException(String
                         .format("Unable to get a response from OWM server"));
             }
             int statusCode = statusLine.getStatusCode();
             if (statusCode < 200 || statusCode >= 300) {
+            	EntityUtils.consumeQuietly(responseEntity);
                 throw new IOException(String.format(
                         "OWM server responded with status code %d: %s",
                         statusCode, statusLine));
             }
             /* Read the response content */
-            HttpEntity responseEntity = response.getEntity();
             contentStream = responseEntity.getContent();
             Reader isReader = new InputStreamReader(contentStream);
             int contentSize = (int) responseEntity.getContentLength();
