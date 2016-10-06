@@ -183,7 +183,7 @@ public class WeatherData extends AbstractWeatherData {
 		@Override
 		public String toString() {
 			// nice output is dependent on measurements being an AbstractMap instance (like though HashMap)
-			return "measurements =" + measurements.toString();
+			return "measurements=" + (measurements == null ? null : measurements.toString());
 		}
 	}
 
