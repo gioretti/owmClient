@@ -15,6 +15,7 @@
  ***************************************************************************/
 package org.bitpipeline.lib.owm;
 
+import org.bitpipeline.lib.owm.OwmClient.Units;
 import org.json.JSONObject;
 
 /**
@@ -32,11 +33,55 @@ abstract public class AbstractWeatherData {
 		protected static final String JSON_HUMIDITY = "humidity";
 		protected static final String JSON_PRESSURE = "pressure";
 
+		/**
+		 * Returns the temperature in one of Celsius (if {@link Units#METRIC})
+		 * or Fahrenheit (if {@link Units#IMPERIAL}).
+		 * 
+		 * @return the temperature in a preselected unit or Nan if no
+		 *         temperature could be found
+		 */
 		abstract public float getTemp ();
+		
+		/**
+		 * Returns the minimal temperature in one of Celsius (if
+		 * {@link Units#METRIC}) or Fahrenheit (if {@link Units#IMPERIAL}).
+		 * 
+		 * @return the minimal temperature in a preselected unit or Nan if no
+		 *         temperature could be found
+		 */
 		abstract public float getTempMin ();
+		
+		/**
+		 * Returns the maximal temperature in one of Celsius (if
+		 * {@link Units#METRIC}) or Fahrenheit (if {@link Units#IMPERIAL}).
+		 * 
+		 * @return the maximal temperature in a preselected unit or Nan if no
+		 *         temperature could be found
+		 */
 		abstract public float getTempMax ();
+		
+		/**
+		 * Returns the pressure in hPa.
+		 * 
+		 * @return the pressure in hPa or NaN if no humidity could be found.
+		 */
 		abstract public float getPressure ();
+		
+		/**
+		 * Returns the humidity in percent.
+		 * 
+		 * @return the humidity in % or NaN if no humidity could be found.
+		 */
 		abstract public float getHumidity ();
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Main.class.getSimpleName() + "[getTemp()=" + getTemp() + ", getTempMin()=" + getTempMin() + ", getTempMax()=" + getTempMax()
+				+ ", getPressure()=" + getPressure() + ", getHumidity()=" + getHumidity() + "]";
+		}
 	}
 
 	static abstract public class Wind {
@@ -46,11 +91,34 @@ abstract public class AbstractWeatherData {
 		protected static final String JSON_VAR_BEG = "var_beg";
 		protected static final String JSON_VAR_END = "var_end";
 
+		/**
+		 * Returns the wind speed in in one of meter per second (if
+		 * {@link Units#METRIC}) or miles per hour (if {@link Units#IMPERIAL}).
+		 * 
+		 * @return the wind speed in a preselected unit or NaN if no wind speed
+		 *         could be found
+		 */         
 		abstract public float getSpeed ();
+		
+		/**
+		 * Returns the wind direction in degrees.
+		 * 
+		 * @return the wind direction in degrees or {@link Integer#MIN_VALUE} if
+		 *         no wind direction could be found.
+		 */
 		abstract public int getDeg ();
 		abstract public float getGust ();
 		abstract public int getVarBeg ();
 		abstract public int getVarEnd ();
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Wind.class.getSimpleName() + " [getSpeed()=" + getSpeed() + ", getDeg()=" + getDeg() + ", getGust()=" + getGust()
+				+ ", getVarBeg()=" + getVarBeg() + ", getVarEnd()=" + getVarEnd() + "]";
+		}
 	}
 
 	private final long dateTime;

@@ -69,8 +69,18 @@ public class Temperature {
         return tempEve;
     }
 
-    public float getTempMorn() {
+	public float getTempMorn() {
         return tempMorn;
     }
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return Temperature.class.getSimpleName() + " [temp=" + temp + ", tempMin=" + tempMin + ", tempMax=" + tempMax + ", tempDay=" + tempDay
+			+ ", tempDayMin=" + tempDayMin + ", tempDayMax=" + tempDayMax + ", tempNight=" + tempNight + ", tempEve="
+			+ tempEve + ", tempMorn=" + tempMorn + "]";
+	}
 
 }

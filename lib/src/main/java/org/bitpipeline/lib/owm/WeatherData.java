@@ -73,6 +73,15 @@ public class WeatherData extends AbstractWeatherData {
 		public float getHumidity () {
 			return this.humidity;
 		}
+		
+		/* (non-Javadoc)
+		 * @see org.bitpipeline.lib.owm.AbstractWeatherData.Main#toString()
+		 */
+		@Override
+		public String toString() {
+			String s = super.toString();
+			return s.substring(0, s.length()-1) + ", getTemperature()=" + getTemperature() + "]";
+		}
 	}
 
 	public static class Wind extends AbstractWeatherData.Wind {
@@ -167,6 +176,15 @@ public class WeatherData extends AbstractWeatherData {
 				return Collections.emptySet ();
 			return this.measurements.keySet ();
 		}
+		
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			// nice output is dependent on measurements being an AbstractMap instance (like though HashMap)
+			return "measurements=" + (measurements == null ? null : measurements.toString());
+		}
 	}
 
 	public static class Clouds extends TimedDetails {
@@ -195,6 +213,14 @@ public class WeatherData extends AbstractWeatherData {
 				public String getDescription () {
 					return this.description;
 				}
+				
+				/* (non-Javadoc)
+				 * @see java.lang.Enum#toString()
+				 */
+				@Override
+				public String toString() {
+					return "SkyCondition [" + getDescription() + "]";
+				}
 			}
 
 			public static enum Cumulus {
@@ -211,6 +237,14 @@ public class WeatherData extends AbstractWeatherData {
 
 				public String getDescription () {
 					return this.description;
+				}
+				
+				/* (non-Javadoc)
+				 * @see java.lang.Enum#toString()
+				 */
+				@Override
+				public String toString() {
+					return "Cumulus [" + getDescription() + "]";
 				}
 			}
 
@@ -256,6 +290,15 @@ public class WeatherData extends AbstractWeatherData {
 			public Cumulus getCumulus () {
 				return this.cumulus;
 			}
+
+			/* (non-Javadoc)
+			 * @see java.lang.Object#toString()
+			 */
+			@Override
+			public String toString() {
+				return "CloudDescription [skyCondition=" + skyCondition + ", cumulus=" + cumulus + ", distance="
+					+ distance + "]";
+			}
 		}
 
 		private final int all;
@@ -278,9 +321,21 @@ public class WeatherData extends AbstractWeatherData {
 			}
 		}
 
+		/**
+		 * Returns if the cloudiness is specified.
+		 * 
+		 * @return <code>true</code> if the cloudiness is specified
+		 * @see #getAll()
+		 */
 		public boolean hasAll () {
 			return this.all != Integer.MIN_VALUE;
 		}
+		
+		/**
+		 * Returns the cloudiness in percent.
+		 * 
+		 * @return the cloudiness in %
+		 */
 		public int getAll () {
 			return this.all;
 		}
@@ -290,6 +345,15 @@ public class WeatherData extends AbstractWeatherData {
 		}
 		public List<CloudDescription> getConditions () {
 			return this.conditions;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Clouds.class.getSimpleName() + " [conditions=" + Arrays.toString(conditions.toArray()) + ", all="
+				+ all + ", " + super.toString() + "]";
 		}
 	}
 
@@ -307,6 +371,14 @@ public class WeatherData extends AbstractWeatherData {
 		}
 		public int getToday () {
 			return this.today;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Precipitation.class.getSimpleName() + " [today=" + today + ", "+ super.toString() + "]";
 		}
 	}
 
@@ -385,6 +457,14 @@ public class WeatherData extends AbstractWeatherData {
 			public int getId () {
 				return this.id;
 			}
+			
+			/* (non-Javadoc)
+			 * @see java.lang.Enum#toString()
+			 */
+			@Override
+			public String toString() {
+				return super.toString() + "(" + getId() + ")";
+			}
 		}
 		
 		private static final String JSON_ID = "id";
@@ -427,6 +507,15 @@ public class WeatherData extends AbstractWeatherData {
 		}
 		public String getIconName () {
 			return this.iconName;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return WeatherCondition.class.getSimpleName() + " [code=" + code + ", main=" + main + ", description=" + description + ", iconName="
+				+ iconName + "]";
 		}
 	}
 
@@ -507,7 +596,7 @@ public class WeatherData extends AbstractWeatherData {
 	public Clouds getClouds () {
 		return this.clouds;
 	}
-
+	
 	public boolean hasRain () {
 		return this.rain != null;
 	}
@@ -522,9 +611,20 @@ public class WeatherData extends AbstractWeatherData {
 		return this.snow;
 	}
 
+	/**
+	 * Returns if the perciptation is specified.
+	 * 
+	 * @return <code>true</code> if the perciptation is specified
+	 * @see #getPrecipitation()
+	 */
+	public boolean hasPerciptation () {
+		return hasRain() || hasSnow();
+	}
+
 	public boolean hasWeatherConditions () {
 		return this.weatherConditions != null && !this.weatherConditions.isEmpty ();
 	}
+	
 	public List<WeatherCondition> getWeatherConditions () {
 		return this.weatherConditions;
 	}
@@ -590,5 +690,15 @@ public class WeatherData extends AbstractWeatherData {
 		if (hasSnow ())
 			precipitation = precipitation != Integer.MIN_VALUE ? precipitation + getSnow () : getSnow (); 
 		return precipitation;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return WeatherData.class.getSimpleName() + " [getDateTime()=" + getDateTime() + ", main=" + main + ", wind=" + wind + ", clouds="
+			+ clouds + ", rain=" + rain + ", snow=" + snow + ", weatherConditions="
+			+ Arrays.toString(weatherConditions.toArray()) + "]";
 	}
 }

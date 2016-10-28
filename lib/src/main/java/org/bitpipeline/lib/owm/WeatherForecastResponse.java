@@ -54,9 +54,21 @@ public class WeatherForecastResponse extends AbstractOwmResponse {
 			this.stationsCount = json.optInt (City.JSON_STATIONS_COUNT, Integer.MIN_VALUE);
 		}
 
+		/**
+		 * Tells if the city was given an ID.
+		 * 
+		 * @return <code>true</code> if the city was given an ID
+		 */
 		public boolean hasId () {
 			return this.id != Integer.MIN_VALUE;
 		}
+		
+		/**
+		 * Returns the ID of the city.
+		 * 
+		 * @return the ID of the city or {@link Integer#MIN_VALUE} if none was
+		 *         given.
+		 */
 		public int getId () {
 			return this.id;
 		}
@@ -75,9 +87,21 @@ public class WeatherForecastResponse extends AbstractOwmResponse {
 			return this.country;
 		}
 
+		/**
+		 * Tells if the city was given a name.
+		 * 
+		 * @return <code>true</code> if the city was given a name.
+		 */
 		public boolean hasName () {
 			return this.name != null;
 		}
+		
+		/**
+		 * Returns the name of the city.
+		 * 
+		 * @return the name of the city or <code>""</code> if none was
+		 *         given.
+		 */
 		public String getName () {
 			return this.name;
 		}
@@ -172,9 +196,20 @@ public class WeatherForecastResponse extends AbstractOwmResponse {
 		return this.url;
 	}
 
+	/**
+	 * Tells if city information has been retrieved.
+	 * 
+	 * @return <code>true</code> if city information has been retrieved
+	 */
 	public boolean hasCity () {
 		return this.city != null;
 	}
+	
+	/**
+	 * Returns the city information.
+	 * 
+	 * @return the city information or <code>null</code> if none was goven.
+	 */
 	public City getCity () {
 		return this.city;
 	}

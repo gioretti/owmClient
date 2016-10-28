@@ -37,6 +37,14 @@ public class StatusWeatherData extends LocalizedWeatherData {
 		public int getZoom () {
 			return this.zoom;
 		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return Station.class.getSimpleName() + " [zoom=" + zoom + "]";
+		}
 	}
 	private final long id;
 	private final String name;
@@ -53,6 +61,12 @@ public class StatusWeatherData extends LocalizedWeatherData {
 	public boolean hasId () {
 		return this.id != Long.MIN_VALUE;
 	}
+	
+	/**
+	 * Returns the ID of the city this weather information belongs to.
+	 * 
+	 * @return the ID of the city this weather information belongs to
+	 */
 	public long getId () {
 		return this.id;
 	}
@@ -60,6 +74,12 @@ public class StatusWeatherData extends LocalizedWeatherData {
 	public boolean hasName () {
 		return this.name != null && this.name.length () > 0;
 	}
+	
+	/**
+	 * Returns the name of the city this weather information belongs to.
+	 * 
+	 * @return the name of the city this weather information belongs to
+	 */
 	public String getName () {
 		return this.name;
 	}
@@ -69,5 +89,15 @@ public class StatusWeatherData extends LocalizedWeatherData {
 	}
 	public Station getStation () {
 		return this.station;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s = StatusWeatherData.class.getSimpleName() + s.substring(s.indexOf(' '));
+		return s.substring(0, s.length()-1) + ", id=" + id + ", name=" + name + ", station=" + station + "]";
 	}
 }

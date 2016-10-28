@@ -21,6 +21,8 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,26 +34,59 @@ import java.util.Locale;
  * described in http://openweathermap.org/wiki/API/JSON_API
  * 
  * @author mtavares
+ * @author ondrejvanek
+ * @author Ayutac
  */
 public class OwmClient {
     static private final String APPID_HEADER = "x-api-key";
+    
+    /**
+     * the attribute name for the response code
+     */
     private static final String JSON_CODE = "cod";
+    
+    /**
+     * the error code for JSON objects obtained from OWM
+     * 
+     * @see #JSON_CODE
+     */
     private static final int JSON_ERR = 404;
 
     public enum HistoryType {
         UNKNOWN, TICK, HOUR, DAY
     }
 
+    /**
+     * An enumeration of the possible units to use.
+     */
     public enum Units {
-        METRIC, IMPERIAL;
+    	/**
+    	 * metric units
+    	 */
+        METRIC, 
+        
+        /**
+         * imperial units
+         */
+        IMPERIAL;
 
+    	/**
+    	 * Returns the default units to use.
+    	 * @return the default units to use
+    	 */
         static Units getDefault() {
             return IMPERIAL;
         }
     }
 
+    /**
+     * the units to use
+     */
     private Units units = Units.IMPERIAL;
 
+    /**
+     * the base URL for Open Weather Map
+     */
     private String baseOwmUrl = "http://api.openweathermap.org/data/2.5/";
     private String owmAPPID = null;
 
@@ -318,6 +353,46 @@ public class OwmClient {
         return new StatusWeatherData(response);
     }
 
+	/**
+	 * Find current weather of several cities.
+	 * 
+	 * @param cityIds
+	 *            are the IDs of the cities.
+	 * @return The WeatherStatusResponse received . <code>null</code> will be
+	 *         returned if OWM responds with code {@value #JSON_ERR}.
+	 * @throws NullPointerException
+	 *             if <code>cityIds</code> refers to <code>null</code>
+	 * @throws JSONException
+	 *             if the response from the OWM server can't be parsed
+	 * @throws IOException
+	 *             if there's some network error or the OWM server replies with
+	 *             an error.
+	 */
+    public WeatherStatusResponse currentWeatherAtCities(int[] cityIds)
+            throws IOException, JSONException {
+    	if (cityIds == null)
+    		throw new NullPointerException("City ID array must be specified!");
+    	
+    	StringBuilder s = new StringBuilder();
+    	if (cityIds.length > 0) {
+	    	for (int i = 0; i < cityIds.length-1; i++) {
+	    		s.append(cityIds[i]);
+	    		s.append(',');
+	    	}
+	    	s.append(cityIds[cityIds.length-1]);
+    	}
+    	
+        String subUrl = String.format(Locale.ROOT,
+                "group?id=%s&type=json&units=%s", s.toString(),
+                units.toString().toLowerCase());
+        JSONObject response = doQuery(subUrl);
+        if (isError(response)) {
+            return null;
+        }
+        
+        return new WeatherStatusResponse(response);
+    }
+
     /**
      * Find current station weather report
      * 
@@ -347,7 +422,7 @@ public class OwmClient {
      * 
      * @param cityName
      *            is the name of the city
-     * @return the StatusWeatherData received
+     * @return the WeatherStatusResponse received
      * @throws JSONException
      *             if the response from the OWM server can't be parsed
      * @throws IOException
@@ -392,17 +467,19 @@ public class OwmClient {
     }
 
     /**
-     * Get the weather forecast for a city
-     * 
-     * @param cityId
-     *            is the ID of the city
-     * @return the WeatherForecasteResponse received
-     * @throws JSONException
-     *             if the response from the OWM server can't be parsed
-     * @throws IOException
-     *             if there's some network error or the OWM server replies with
-     *             a error.
-     */
+	 * Get the weather forecast for a city
+	 * 
+	 * @param cityId
+	 *            is the ID of the city
+	 * @return the WeatherForecasteResponse received or <code>null</code> if the
+	 *         {@link #JSON_CODE} attribute of the specified JSON object holds
+	 *         the error value {@value #JSON_ERR}.
+	 * @throws JSONException
+	 *             if the response from the OWM server can't be parsed
+	 * @throws IOException
+	 *             if there's some network error or the OWM server replies with
+	 *             a error.
+	 */
     public WeatherForecastResponse forecastWeatherAtCity(int cityId)
             throws JSONException, IOException {
         String subUrl = String.format(Locale.ROOT,
@@ -443,7 +520,7 @@ public class OwmClient {
      * Get the daily weather forecast for a city in the next 7 days. (Just one
      * Forecast a day).
      * 
-     * @param cityName
+     * @param cityName the name of the city
      * @return the WeatherForecasteResponse received
      * @throws JSONException
      *             if the response from the OWM server can't be parsed
@@ -546,7 +623,53 @@ public class OwmClient {
         }
         return new WeatherHistoryStationResponse(response);
     }
+    
+	/**
+	 * Returns an array containing next cities around specified coordinates in
+	 * JSON text form for further parsing.
+	 * 
+	 * @param lat
+	 *            the latitude of the ideal location
+	 * @param lon
+	 *            the longitude of the ideal location
+	 * @param cnt
+	 *            Number of nearby cities to get. Might not be the size of the
+	 *            returned array.
+	 * @return An array containing the JSON text form of cities nearby the
+	 *         specified location or <code>null</code> if the response code is
+	 *         {@value #JSON_ERR}. if the response from the OWM server can't be
+	 *         parsed
+	 * @throws IOException
+	 *             if there's some network error or the OWM server replies with
+	 *             a error.
+	 */
+	public String[] citiesAroundRaw(float lat, float lon, int cnt) throws JSONException, IOException {
+		String subUrl = String.format(Locale.ROOT, "find?lat=%f&lon=%f&cnt=%d", Float.valueOf(lat), Float.valueOf(lon),
+			Integer.valueOf(cnt));
+		JSONObject response = doQuery(subUrl);
+		if (isError(response)) {
+			return null;
+		}
+		JSONArray cities = response.getJSONArray("list");
+		String[] citiesRaw = new String[response.getInt("count")];
+		for (int i = 0; i < citiesRaw.length; i++)
+			citiesRaw[i] = cities.getJSONObject(i).toString();
+		return citiesRaw;
+	}
 
+	/**
+	 * Tells if the {@value #JSON_CODE} attribute of the specified JSON object
+	 * holds the error value {@value #JSON_ERR}.
+	 * 
+	 * @param json
+	 *            the JSON object to check
+	 * @return <code>true</code> if the attribute is present and its value
+	 *         equals the error value {@value #JSON_ERR}, else
+	 *         <code>false</code>.
+	 * @throws JSONException
+	 *             If the {@value #JSON_CODE} attribute is present but doesn't
+	 *             hold an integer.
+	 */
     private boolean isError(JSONObject json) throws JSONException {
         return json.has(JSON_CODE) && json.getInt(JSON_CODE) == JSON_ERR;
     }
@@ -565,19 +688,21 @@ public class OwmClient {
         HttpResponse response = this.httpClient.execute(httpget);
         InputStream contentStream = null;
         try {
+            HttpEntity responseEntity = response.getEntity();
             StatusLine statusLine = response.getStatusLine();
             if (statusLine == null) {
+            	EntityUtils.consumeQuietly(responseEntity);
                 throw new IOException(String
                         .format("Unable to get a response from OWM server"));
             }
             int statusCode = statusLine.getStatusCode();
             if (statusCode < 200 || statusCode >= 300) {
+            	EntityUtils.consumeQuietly(responseEntity);
                 throw new IOException(String.format(
                         "OWM server responded with status code %d: %s",
                         statusCode, statusLine));
             }
             /* Read the response content */
-            HttpEntity responseEntity = response.getEntity();
             contentStream = responseEntity.getContent();
             Reader isReader = new InputStreamReader(contentStream);
             int contentSize = (int) responseEntity.getContentLength();
