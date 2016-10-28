@@ -623,6 +623,39 @@ public class OwmClient {
         }
         return new WeatherHistoryStationResponse(response);
     }
+    
+	/**
+	 * Returns an array containing next cities around specified coordinates in
+	 * JSON text form for further parsing.
+	 * 
+	 * @param lat
+	 *            the latitude of the ideal location
+	 * @param lon
+	 *            the longitude of the ideal location
+	 * @param cnt
+	 *            Number of nearby cities to get. Might not be the size of the
+	 *            returned array.
+	 * @return An array containing the JSON text form of cities nearby the
+	 *         specified location or <code>null</code> if the response code is
+	 *         {@value #JSON_ERR}. if the response from the OWM server can't be
+	 *         parsed
+	 * @throws IOException
+	 *             if there's some network error or the OWM server replies with
+	 *             a error.
+	 */
+	public String[] citiesAroundRaw(float lat, float lon, int cnt) throws JSONException, IOException {
+		String subUrl = String.format(Locale.ROOT, "find?lat=%f&lon=%f&cnt=%d", Float.valueOf(lat), Float.valueOf(lon),
+			Integer.valueOf(cnt));
+		JSONObject response = doQuery(subUrl);
+		if (isError(response)) {
+			return null;
+		}
+		JSONArray cities = response.getJSONArray("list");
+		String[] citiesRaw = new String[response.getInt("count")];
+		for (int i = 0; i < citiesRaw.length; i++)
+			citiesRaw[i] = cities.getJSONObject(i).toString();
+		return citiesRaw;
+	}
 
 	/**
 	 * Tells if the {@value #JSON_CODE} attribute of the specified JSON object
